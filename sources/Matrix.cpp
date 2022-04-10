@@ -327,10 +327,11 @@
             sum1+=this->_v[i];
             sum2+=m._v[i];
         }
-        if(sum1<sum2){
-            return true;
-        }
-        return false;
+        // if(sum1<sum2){
+        //     return true;
+        // }
+        // return false;
+        return(sum1<sum2);
     }
 
     bool Matrix::operator<= (const Matrix & m){
@@ -344,11 +345,12 @@
             sum1+=this->_v[i];
             sum2+=m._v[i];
         }
-        if(sum1<=sum2){
-            return true;
-        }
+        // if(sum1<=sum2){
+        //     return true;
+        // }
         
-        return false;
+        // return false;
+        return(sum1<=sum2);
     }
 
     bool Matrix::operator> (const Matrix & m){
@@ -362,11 +364,12 @@
             sum1+=this->_v[i];
             sum2+=m._v[i];
         }
-        if(sum1>sum2){
-            return true;
-        }
-        return false;
-        
+        // if(sum1>sum2){
+        //     return true;
+        // }
+        // return false;
+        return(sum1>sum2);
+
     }
 
     bool Matrix::operator>= (const Matrix & m){
@@ -380,28 +383,31 @@
             sum1+=this->_v[i];
             sum2+=m._v[i];
         }
-        if(sum1>=sum2){
-            return true;
-        }
-        return false;
+        // if(sum1>=sum2){
+        //     return true;
+        // }
+        // return false;
+        return (sum1>=sum2);
        
     }
 
     bool Matrix::operator!= (const Matrix & m){
-        if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
-            throw std::invalid_argument( "row or column dont match" );
-        }
-        int max1 = this->getV().size();
-        double sum1 = 0;
-        double sum2 = 0;
-        for (unsigned long i=0; i<max1;i++){
-            sum1+=this->_v[i];
-            sum2+=m._v[i];
-        }
-        if(sum1!=sum2){
-            return true;
-        }
-        return false;
+        // if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
+        //     throw std::invalid_argument( "row or column dont match" );
+        // }
+        // int max1 = this->getV().size();
+        // double sum1 = 0;
+        // double sum2 = 0;
+        // for (unsigned long i=0; i<max1;i++){
+        //     sum1+=this->_v[i];
+        //     sum2+=m._v[i];
+        // }
+        // if(sum1!=sum2){
+        //     return true;
+        // }
+        // return false;
+        bool ans = *this==m;
+        return(!ans);
     }
 
     ostream& zich::operator<< (ostream& output,const Matrix & m){
