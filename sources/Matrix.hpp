@@ -39,16 +39,17 @@ namespace zich{
            
             // addition
             
-            Matrix operator+(const Matrix & m );
-            Matrix operator+();
+            Matrix operator+(const Matrix & m )const;
+            Matrix operator+() const;
             Matrix operator+=(const Matrix & m);
            
 
 
             // subtraction
-            Matrix operator-(const Matrix & m);
-            Matrix operator-();
+            Matrix operator-(const Matrix & m)const;
+            Matrix operator-()const;
             Matrix operator-=(const Matrix & m );
+            // Matrix Matrix::operator-=(int n);
         
 
 
@@ -62,21 +63,21 @@ namespace zich{
 
         
             // multiplacation
-            Matrix operator*(double d);
+            Matrix operator*(double d) const;
             friend Matrix operator*(double d, Matrix & m); 
             //friend &Matrix operator*(double d, Matrix & m); 
-            Matrix operator*(const Matrix & m) ;
+            Matrix operator*(const Matrix & m) const;
             Matrix operator*=(const Matrix & m) ;
             Matrix operator*=(double d);
             
 
             // comparing
-            bool operator==(const Matrix & m );
-            bool operator<(const Matrix & m);
-            bool operator<=(const Matrix & m);
-            bool operator>(const Matrix & m);
-            bool operator>=(const Matrix & m);
-            bool operator!=(const Matrix & m);
+            bool operator==(const Matrix & m ) const;
+            bool operator<(const Matrix & m)const;
+            bool operator<=(const Matrix & m)const;
+            bool operator>(const Matrix & m)const;
+            bool operator>=(const Matrix & m)const;
+            bool operator!=(const Matrix & m)const;
 
 
             //print

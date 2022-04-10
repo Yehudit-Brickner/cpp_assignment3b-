@@ -56,7 +56,7 @@
     
    
 
-    Matrix Matrix::operator+ (){
+    Matrix Matrix::operator+ ()const{
       int r= this->getRow();
       int c= this->getCol();
       vector<double>new_v=this->getV();
@@ -65,7 +65,7 @@
       return new_mat;
     }
 
-    Matrix Matrix::operator+ (const Matrix & m ){
+    Matrix Matrix::operator+ (const Matrix & m )const{
         if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
             throw std::invalid_argument( "row or column dont match" );
         }
@@ -94,7 +94,7 @@
         return *this;
     }
 
-    Matrix Matrix::operator- (){
+    Matrix Matrix::operator- ()const {
         int r= this->getRow();
         int c= this->getCol();
         vector<double>new_v=this->getV();
@@ -108,7 +108,7 @@
         return new_mat;
     }
 
-    Matrix Matrix::operator- (const Matrix & m){
+    Matrix Matrix::operator- (const Matrix & m)const{
         if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
             throw std::invalid_argument( "row or column dont match" );
         } 
@@ -136,6 +136,14 @@
         } 
         return *this;
     }
+
+    // Matrix Matrix::operator-=(int n){
+        
+    //     for (unsigned long i=0; i<this->_v.size();i++){
+    //         this->_v[i]-=n;
+    //     } 
+    //     return *this;
+    // }
 
     Matrix Matrix:: operator++ (){
         int max= this->getV().size();
@@ -172,12 +180,16 @@
 
     }
 
-    Matrix Matrix::operator* (double d){
+    Matrix Matrix::operator* (double d) const {
         int max= this->getV().size();
+        int r=this->getRow();
+        int c=this->getCol();
+        vector<double> newv=this->getV();
         for (unsigned long j=0;j<max;j++){
-            this->_v[j]=this->_v[j]*d;
+            newv[j]*=d;
         } 
-         return *this;
+       Matrix newmat{newv,r,c};
+       return newmat;
     }
 
     Matrix zich::operator*(double d, Matrix &m){
@@ -196,7 +208,7 @@
         return mat;
     }
 
-    Matrix Matrix::operator* (const Matrix & m){
+    Matrix Matrix::operator* (const Matrix & m)const{
          if(this->getCol()!=m.getRow()){
             throw std::invalid_argument( "these matrices can not be multiplyed" );
         }
@@ -292,7 +304,7 @@
         return *this;
     }
 
-    bool Matrix::operator== (const Matrix & m ){
+    bool Matrix::operator== (const Matrix & m )const{
         if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
             throw std::invalid_argument( "row or column dont match" );
         }
@@ -316,7 +328,7 @@
         return true;
     }
 
-    bool Matrix::operator< (const Matrix & m){
+    bool Matrix::operator< (const Matrix & m)const{
         if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
             throw std::invalid_argument( "row or column dont match" );
         }
@@ -334,7 +346,7 @@
         return(sum1<sum2);
     }
 
-    bool Matrix::operator<= (const Matrix & m){
+    bool Matrix::operator<= (const Matrix & m)const{
         if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
             throw std::invalid_argument( "row or column dont match" );
         }
@@ -353,7 +365,7 @@
         return(sum1<=sum2);
     }
 
-    bool Matrix::operator> (const Matrix & m){
+    bool Matrix::operator> (const Matrix & m)const{
         if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
             throw std::invalid_argument( "row or column dont match" );
         }
@@ -372,7 +384,7 @@
 
     }
 
-    bool Matrix::operator>= (const Matrix & m){
+    bool Matrix::operator>= (const Matrix & m)const{
         if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
             throw std::invalid_argument( "row or column dont match" );
         }
@@ -391,7 +403,7 @@
        
     }
 
-    bool Matrix::operator!= (const Matrix & m){
+    bool Matrix::operator!= (const Matrix & m)const{
         // if(this->getCol()!=m.getCol()||this->getRow()!=m.getRow()){
         //     throw std::invalid_argument( "row or column dont match" );
         // }
@@ -432,11 +444,11 @@
             }
             //ans.push_back(']');
             output << ']';
-            output << '\n';
-            // if(i<rl){
-            //     //ans.push_back('\n');
-            //     output << '\n';
-            // } 
+            // output << '\n';
+            if(i<rl-1){
+                //ans.push_back('\n');
+                output << '\n';
+            } 
         }
         //return ans;
         //output << ans<< endl;
