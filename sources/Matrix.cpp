@@ -483,7 +483,7 @@
                     cout<<"threw an eeror because start isnt [ or end isnt ] of the row"<<endl;
                     throw std::invalid_argument("illegal input"); 
                 }
-                string newstr="";
+                string newstr;
                 for (unsigned long j=2;j<str.length()-1;j++){
                     newstr.push_back(str[j]);
                 }
@@ -495,7 +495,7 @@
                     cout<<"threw an eeror because start isnt [ or end isnt ] of the row"<<endl;
                     throw std::invalid_argument("illegal input"); 
                 } 
-                string newstr="";
+                string newstr;
                 for (unsigned long j=1;j<str.length()-1;j++){
                     newstr.push_back(str[j]);
                 }
