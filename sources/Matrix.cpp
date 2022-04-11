@@ -425,34 +425,23 @@
     ostream& zich::operator<< (ostream& output,const Matrix & m){
         int r=m.getRow();
         int c=m.getCol();
-        //string ans="";
         unsigned long rl=( unsigned long)r;
         unsigned long cl=( unsigned long)c;
         unsigned long k=0;
         for (unsigned long i=0;i<rl;i++){
-            //ans.push_back('[');
             output<< '[';
             for (unsigned long j=0;j<cl;j++){
-                //ans.push_back(m._v[k]);
-                //cout<< m._v[k];
                 output<< m._v[k];
                 if(j<cl-1){
-                    //ans.push_back(' ');
                     output<< ' ';
                 }
                 k++;
             }
-            //ans.push_back(']');
             output << ']';
-            // output << '\n';
             if(i<rl-1){
-                //ans.push_back('\n');
                 output << '\n';
             } 
         }
-        //return ans;
-        //output << ans<< endl;
-        //output << ans ;
         return output;
 
     }
@@ -460,55 +449,101 @@
     istream& zich::operator>>(istream& input,  Matrix& m){
         
 
-            // needs work!!!!!!!
+           
 
 
-        // cout<< "please enter the amount of rows"<< endl; 
-        // input >> m._row;
-        // cout<< "please enter the amount of cols"<< endl; 
-        // input >> m._col;
-        // vector<double> new_v;
-        // unsigned long co=(unsigned long)(m._col);
-        // unsigned long ro=(unsigned long)(m._row);
-        // unsigned long s=co*ro;
-        // new_v.resize(s);
-        // cout<< "please enter the marix values"<< endl; 
-        // for (unsigned long i=0; i<s;i++){
-        //     input >> new_v[i];
-        // }
-        // m._v=new_v;
-        // return input;
-        cout<< "first time called" << endl;
-        string s;
-        input>> s;
-        cout << s<<endl;
-        stringstream test(s);
-        string segment;
+        string str;
+        string mat_input;
+        while(getline(input,str)){
+            mat_input+=str;
+        }
+        cout<<"mat_input "<<mat_input<<endl;
+
+        if (mat_input[0]!='[' || mat_input[mat_input.length()-1]!=']' ){
+            cout<<"threw an eeror because start isnt [ or end isnt ] of the input"<<endl;
+            throw std::invalid_argument("illegal input"); 
+
+        }
         vector<string> seglist;
-        vector<string> nums;
+        stringstream s_stream(mat_input); //create string stream from the string
+        while(s_stream.good()) {
+            string substr;
+            getline(s_stream, substr, ','); //get first string delimited by comma
+            seglist.push_back(substr);
+        }
+ 
+        for(unsigned long i=0;i<seglist.size();i++){
+            if(i>0){
+                string str=seglist[i];
+                if (str[0]!=' '){
+                    cout<<"threw an eeror because start isnt ' ' "<<endl;
+                    throw std::invalid_argument("illegal input");     
+                }
+                if(str[1]!='[' || str[str.length()-1]!=']'){
+                    cout<<"threw an eeror because start isnt [ or end isnt ] of the row"<<endl;
+                    throw std::invalid_argument("illegal input"); 
+                }
+                string newstr="";
+                for (unsigned long j=2;j<str.length()-1;j++){
+                    newstr.push_back(str[j]);
+                }
+                seglist[i]=newstr;
+            }
+            else{
+                string str=seglist[i];
+                if(str[0]!='[' || str[str.length()-1]!=']'){
+                    cout<<"threw an eeror because start isnt [ or end isnt ] of the row"<<endl;
+                    throw std::invalid_argument("illegal input"); 
+                } 
+                string newstr="";
+                for (unsigned long j=1;j<str.length()-1;j++){
+                    newstr.push_back(str[j]);
+                }
+                seglist[i]=newstr;
+            }
+        }
+        
+        
+        int row=(int)seglist.size();
+        
+       
+        vector<string> numlist;
+        stringstream s_stream1(seglist[0]); //create string stream from the string
+            while(s_stream1.good()) {
+                string substr;
+                getline(s_stream1, substr, ' '); //get first string delimited by a space
+                numlist.push_back(substr);
+            }
+        int col=(int)numlist.size();
+        for(unsigned long i=1;i<seglist.size();i++){
+            stringstream s_stream2(seglist[i]); //create string stream from the string
+            while(s_stream2.good()) {
+                string substr;
+                getline(s_stream2, substr, ' '); //get first string delimited by a space
+                numlist.push_back(substr);                
+            }
+        }
+        // numlist should be a vector of strings -each string is a number
+        int sum=(int)numlist.size();
+        cout<< col<< " "<< row<<" " <<sum<<endl;
+        if(col*row!=sum){
+            cout<<"threw an eeror because col*row!=sum"<<endl;
+            throw std::invalid_argument("illegal input"); 
+        }
         vector<double> v;
-        int row=1;
-        int col=1;
-        while(getline(test, segment, ',')) {
-            seglist.push_back(segment);
-            cout<< segment<< endl;
+        unsigned long summ=(unsigned long)sum;
+        v.resize(summ);
+        try{
+            for (unsigned long i=0;i<numlist.size();i++){
+                double d=stod(numlist[i]);
+                v[i]=d;
+            }  
         }
-        row=seglist.size();
-        for (unsigned long i=0; i<seglist.size();i++){
-                stringstream n(seglist[i]);
-            while(getline(n, segment, ' ')) {
-                nums.push_back(segment);
-            }
-            for (unsigned long j=0; i<nums.size();i++){
-                v.push_back(stod(nums[j]));
-            }
-            nums.clear();
+        catch(exception e){
+            cout<<"threw an eeror because isnt number"<<endl;
+            throw std::invalid_argument("illegal input"); 
         }
-        int v_size=(int)v.size();
-        if(v_size/row>0) {
-            col=v_size/row;
-        }
-        cout<< "row "<<row<<" col "<< col<< endl;
-        Matrix new_m{v,row,col};
+        m.setMatrix(v,row,col);
+       
         return input;
     }
