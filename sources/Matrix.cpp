@@ -16,8 +16,27 @@
 
     using namespace zich;
 
-    void Matrix::setMatrix (vector<double> & v,int r, int c){
-        if( r<1 || c<1){
+    // void Matrix::setMatrix (vector<double> & v,int r, int c){
+    //     if( r<1 || c<1){
+    //         //cout <<"r*c "<< r*c << "s " << v.size()<< endl;
+    //         throw std::invalid_argument( "row or col invalid size" ); 
+    //     }
+    //     if(v.empty()){
+    //         //cout <<"r*c "<< r*c << "s " << v.size()<< endl;
+    //        throw std::invalid_argument( "vector  is invalid" ); 
+    //     }
+    //     if(r*c!=v.size()){
+    //         //cout <<"r*c "<< r*c << "s " << v.size()<< endl; 
+    //         throw std::invalid_argument( "size of vector doesnt match row*col" ); 
+    //     }
+
+    //     this->setRow(r);
+    //     this->setCol(c);
+    //     this->setV(v);
+    // }
+
+    Matrix::Matrix (const vector<double> &v, int r, int c){
+         if( r<1 || c<1){
             //cout <<"r*c "<< r*c << "s " << v.size()<< endl;
             throw std::invalid_argument( "row or col invalid size" ); 
         }
@@ -30,28 +49,24 @@
             throw std::invalid_argument( "size of vector doesnt match row*col" ); 
         }
 
-        this->setRow(r);
-        this->setCol(c);
-        this->setV(v);
-    }
-
-    Matrix::Matrix (vector<double> v, int r, int c){
-        this->setMatrix(v,r,c);
+        this->_row=r;
+        this->_col=c;
+        this->_v=v;
     }
 
     Matrix::Matrix(const Matrix & other){
         int r=other.getRow();
         int c =other.getCol();
         vector<double> old=other.getV();
-        unsigned long s=old.size();
-        vector<double> new_v;
-        new_v.reserve(s);
-        for (unsigned long i=0;i<s;i++){
-            new_v[i]=old[i];
-        }
-        this->setCol(c);
-        this->setRow(r);
-        this->setV(new_v);
+        // unsigned long s=old.size();
+        // vector<double> new_v;
+        // new_v.reserve(s);
+        // for (unsigned long i=0;i<s;i++){
+        //     new_v[i]=old[i];
+        // }
+        this->_col=c;
+        this->_row=r;
+        this->_v=old;
     }
     
    
@@ -146,7 +161,7 @@
     // }
 
     Matrix Matrix:: operator++ (){
-        int max= this->getV().size();
+        int max= this->getV().size();       
         for (unsigned long i=0;i<max;i++){
             this->_v[i]++;
         }  
@@ -161,22 +176,16 @@
         return *this; 
     }
 
-    Matrix Matrix::operator++ (int i){
-        Matrix *pmat= this;
-        int max= this->getV().size();
-        for (unsigned long i=0;i<max;i++){
-            this->_v[i]++;
-        }
-        return *pmat;
+    Matrix Matrix::operator++ (int){
+        Matrix tmp = +(*this);
+        ++*this;
+        return tmp;
     }
     
-    Matrix Matrix::operator-- (int i){
-         Matrix *pmat= this;
-        int max= this->getV().size();
-        for (unsigned long i=0;i<max;i++){
-            this->_v[i]--;
-        }
-        return *pmat;
+    Matrix Matrix::operator-- (int){
+        Matrix tmp = +(*this);
+        --*this;
+        return tmp;
 
     }
 
@@ -543,7 +552,9 @@
             cout<<"threw an eeror because isnt number"<<endl;
             throw std::invalid_argument("illegal input"); 
         }
-        m.setMatrix(v,row,col);
-       
+       // m.setMatrix(v,row,col);
+       m.setCol(col);
+       m.setRow(row);
+       m.setV(v); 
         return input;
     }

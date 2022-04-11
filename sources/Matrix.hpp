@@ -19,11 +19,10 @@ namespace zich{
         public:
 
             //constructor
-            Matrix(vector<double> v= {1},int r=1, int c=1);
+            Matrix(const vector<double> &v,int r, int c);
             Matrix(const Matrix& other);
             ~Matrix(){
-               // cout<< "destroyed?"<< endl;
-                //this->_v.clear();
+              
             }
 
             int getRow() const {return this->_row;}
@@ -34,7 +33,7 @@ namespace zich{
             // void setCol(int c){this->_col=c;}
             // void setV(vector<double>& v){this->_v=v;}
             
-            void setMatrix(vector<double> & v,int r, int c); 
+            // void setMatrix(vector<double> & v,int r, int c); 
             
            
             // addition
