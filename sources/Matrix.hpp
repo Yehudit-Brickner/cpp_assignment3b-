@@ -43,8 +43,8 @@ namespace zich{
 
             // increment decrement
             //prefix
-            Matrix operator++(); 
-            Matrix operator--(); 
+            Matrix operator++(); //Matrix& operator++()
+            Matrix operator--(); //Matrix& operator--()
             //postfix
             Matrix operator++(int i);
             Matrix operator--(int i);
