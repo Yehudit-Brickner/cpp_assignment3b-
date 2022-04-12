@@ -8,12 +8,6 @@
 
 
 
-
-
-
-
-
-
     using namespace zich;
 
     //constructor
@@ -50,14 +44,6 @@
 
     Matrix Matrix::operator+ ()const{
         // using the copy constructor to make a new Matrix
-
-        // int r= this->getRow();
-        // int c= this->getCol();
-        // vector<double>new_v=this->getV();
-        // Matrix new_mat{new_v, r,c};
-        // return new_mat;
-        // Matrix new_mat=Matrix(*this);
-        // return new_mat;
         return Matrix(*this);
     }
 
@@ -100,17 +86,6 @@
     Matrix Matrix::operator- ()const {
         // using the copy constructor to make a new Matrix
         // multiplying by -1 to get the negative of the Matrix
-
-        // int r= this->getRow();
-        // int c= this->getCol();
-        // vector<double>new_v=this->getV();
-        // for (unsigned long i=0;i<new_v.size();i++){
-        //     if(new_v[i]!=0){
-        //         new_v[i]*=-1;
-        //     }
-        // }
-        // Matrix new_mat{new_v, r,c};
-        // return new_mat;
         Matrix new_mat=Matrix(*this);
         new_mat*=-1;
         return new_mat;
@@ -448,25 +423,25 @@
     }
 
     istream& zich::operator>>(istream& input,  Matrix& m){
-        
-        // we will get the input and chack that at the beging and end are '[' ']'. if not we will throw an exception.
-        // we will create an istream to parse the string by ',' this should give us a string vector of each row. 
-        // we will check that each string in the vecter starts with '[' or ' ['(all rows but first) and end with ']'.
-        // if not we will throw an exception. if we didnt throw an exception we will get rid of the '[' ot' [' at the begining and the ']' at the end of the string.
-        // the size of the vector will be the row size
-        // we will create an istream to parse the first row with ' '. and the size of the string vector will be the col size
-        // we will create another istream to parse the rest of the rows into the same vector 
-        // we will check that the size of the vector with all the parsed numbers is the size of col*row. if not we will throw an exception
-        // we will create a double vector the same size as the string vector 
-        // we will use a try and catch to change all the strings to doubles, 
-        //if no exceptions are thrown the vector is good and we will set the values of the matrix
-
+        /*
+         we will get the input and chack that at the beging and end are '[' ']'. if not we will throw an exception.
+         we will create an istream to parse the string by ',' this should give us a string vector of each row. 
+         we will check that each string in the vecter starts with '[' or ' ['(all rows but first) and end with ']'.
+         if not we will throw an exception. if we didnt throw an exception we will get rid of the '[' ot' [' at the begining and the ']' at the end of the string.
+         the size of the vector will be the row size
+         we will create an istream to parse the first row with ' '. and the size of the string vector will be the col size
+         we will create another istream to parse the rest of the rows into the same vector 
+         we will check that the size of the vector with all the parsed numbers is the size of col*row. if not we will throw an exception
+         we will create a double vector the same size as the string vector 
+         we will check each string to make sure that it only containd numbers and dots, and that the dot appears at most once.
+         if no exceptions are thrown we will change the string to a double and add to the vector
+         we will set the matrixes size and vector
+        */
         string str;
         string mat_input;
-        while(getline(input,str)){
-            mat_input+=str;
-        }
-
+        
+        getline(input,mat_input);
+        
         if (mat_input[0]!='[' || mat_input[mat_input.length()-1]!=']' ){
             throw std::invalid_argument("illegal input"); 
         }
@@ -518,7 +493,7 @@
         }
 
         int col=(int)numlist.size();
-        
+
         for(unsigned long i=1;i<seglist.size();i++){
             stringstream s_stream2(seglist[i]); //create string stream from the string
             while(s_stream2.good()) {
@@ -528,7 +503,7 @@
             }
         }
 
-        // numlist should be a vector of strings -each string is a number
+        // numlist should be a vector of strings - each string should be a numre is a number
         int sum=(int)numlist.size();
 
         if(col*row!=sum){
@@ -538,15 +513,28 @@
         vector<double> v;
         unsigned long summ=(unsigned long)sum;
         v.resize(summ);
-        try{
-            for (unsigned long i=0;i<numlist.size();i++){
-                double d=stod(numlist[i]);
-                v[i]=d;
-            }  
-        }
-        catch(exception e){
-            throw std::invalid_argument("illegal input"); 
-        }
+    
+        const int zero=48;
+        const int nine=57;
+        const int dot=46;
+        const int one=1;
+
+        for (unsigned long i=0;i<numlist.size();i++){
+            int seen_dot=0;
+            for(unsigned long j=0; j<numlist[i].length();j++){
+                if(numlist[i][j]>nine || numlist[i][j] <zero ){
+                    if (numlist[i][j]!=dot){
+                        throw std::invalid_argument("illegal input"); 
+                    }
+                    seen_dot++;
+                    if(seen_dot>one){
+                        throw std::invalid_argument("illegal input"); 
+                    } 
+                }
+            }
+            double d=stod(numlist[i]);
+            v[i]=d;
+        }  
 
         m.setCol(col);
         m.setRow(row);
